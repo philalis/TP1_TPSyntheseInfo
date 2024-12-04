@@ -15,32 +15,30 @@ void main(){
 
 	write(STDOUT_FILENO,welcomeMessage,strlen(welcomeMessage));
 	while(1){
-
 		write(STDOUT_FILENO,promptMessage,strlen(promptMessage));
-
-
-		
-
 		 int commandBytes =  read(STDIN_FILENO,commandbuff,maxCommandLength);
-		 
-		 commandbuff[commandBytes-1]='\0';
-
-		 int status;
-		 if (commandBytes>0){
-			
+		 char test[4];
+		strcpy(test,commandbuff);
+		if(strcmp(test,"exit\n")==0 || strcmp(test,"^D")){
+			write(STDOUT_FILENO,"Bye Bye ...\n",16);
+			exit(EXIT_SUCCESS);
+		}
+		commandbuff[commandBytes-1]='\0';
+		int status;
+		if (commandBytes>0){
 			int pid = fork();
-			if(pid ==0){				
-				execlp(commandbuff,commandbuff,(char*)NULL);
-				exit(EXIT_FAILURE);
-			}
-			else {
-				wait(&status);
-			}
+		if(pid ==0){				
+			execlp(commandbuff,commandbuff,(char*)NULL);
+			exit(EXIT_FAILURE);
+		}
+		else {
+			wait(&status);
+		}
 
-		 }
-		
-	}
+		}
 	
+	}
+
 
 
 	
